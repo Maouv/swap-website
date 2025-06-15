@@ -1,8 +1,18 @@
+import { useEffect } from "react";
 import { WalletConnection } from '@/components/wallet-connection';
 import { SwapInterface } from '@/components/swap-interface';
 import { Web3Provider } from '@/hooks/use-web3';
+import { WEB3_CONFIG } from '@/lib/web3-config';
+import { addMonadNetworkToWallet } from '@/lib/web3-utils';
 
 function SwapPageContent() {
+  useEffect(() => {
+    const currentChainId = window.ethereum?.networkVersion;
+    if (currentChainId && currentChainId !== WEB3_CONFIG.CHAIN_ID.toString()) {
+      addMonadNetworkToWallet();
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-ledgr-dark text-white font-courier">
       {/* Header */}

@@ -2,8 +2,19 @@ import { useState, useEffect, createContext, useContext, ReactNode } from 'react
 import { ethers } from 'ethers';
 import { WEB3_CONFIG } from '@/lib/web3-config';
 
+declare global {
+  interface Window {
+    ethereum?: {
+      request: (args: { method: string; params?: any[] }) => Promise<any>;
+      on: (event: string, handler: (...args: any[]) => void) => void;
+      removeListener: (event: string, handler: (...args: any[]) => void) => void;
+      isMetaMask?: boolean;
+    };
+  }
+}
+
 interface Web3State {
-  provider: ethers.providers.Web3Provider | null;
+  provider: ethers.BrowserProvider | null;
   signer: ethers.Signer | null;
   account: string | null;
   chainId: number | null;
@@ -17,7 +28,7 @@ interface Web3State {
 const Web3Context = createContext<Web3State | undefined>(undefined);
 
 export function Web3Provider({ children }: { children: ReactNode }) {
-  const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>(null);
+  const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
   const [signer, setSigner] = useState<ethers.Signer | null>(null);
   const [account, setAccount] = useState<string | null>(null);
   const [chainId, setChainId] = useState<number | null>(null);
@@ -31,21 +42,24 @@ export function Web3Provider({ children }: { children: ReactNode }) {
     }
 
     try {
-      const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
-      const accounts = await web3Provider.send('eth_requestAccounts', []);
+      // Request account access
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
+      
+      const web3Provider = new ethers.BrowserProvider(window.ethereum);
+      const accounts = await web3Provider.listAccounts();
       
       if (accounts.length > 0) {
-        const signer = web3Provider.getSigner();
+        const signer = await web3Provider.getSigner();
         const network = await web3Provider.getNetwork();
         
         setProvider(web3Provider);
         setSigner(signer);
-        setAccount(accounts[0]);
-        setChainId(network.chainId);
+        setAccount(accounts[0].address);
+        setChainId(Number(network.chainId));
         setIsConnected(true);
 
         // Switch to Monad testnet if not already connected
-        if (network.chainId !== WEB3_CONFIG.CHAIN_ID) {
+        if (Number(network.chainId) !== WEB3_CONFIG.CHAIN_ID) {
           await switchNetwork();
         }
       }

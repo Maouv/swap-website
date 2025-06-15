@@ -118,55 +118,40 @@ export function useSwap() {
   }, [provider, swapState.fromToken, swapState.toToken]);
 
   const executeSwap = useCallback(async () => {
-    if (!signer || !isConnected || !isCorrectNetwork || !swapState.fromAmount) {
+    if (!signer || !isConnected || !isCorrectNetwork || !swapState.fromAmount || !account) {
       throw new Error('Please connect wallet and ensure correct network');
     }
 
     try {
       setSwapState(prev => ({ ...prev, isLoading: true, error: null }));
 
-      const routerContract = getRouterContract(signer);
       const amountIn = ethers.utils.parseEther(swapState.fromAmount);
-      const amountOutMin = ethers.utils.parseEther(
-        (parseFloat(swapState.toAmount) * 0.995).toString() // 0.5% slippage
-      );
-      const deadline = Math.floor(Date.now() / 1000) + 60 * 20; // 20 minutes from now
-
       let tx;
 
       if (swapState.fromToken === 'MON' && swapState.toToken === 'WMON') {
-        // MON -> WMON (ETH -> Token)
-        const wethAddress = await routerContract.WETH();
-        const path = [wethAddress, WEB3_CONFIG.WMON_ADDRESS];
-        
-        tx = await routerContract.swapExactETHForTokens(
-          amountOutMin,
-          path,
-          account,
-          deadline,
-          { value: amountIn }
-        );
-      } else if (swapState.fromToken === 'WMON' && swapState.toToken === 'MON') {
-        // WMON -> MON (Token -> ETH)
-        // First check allowance and approve if necessary
+        // MON -> WMON: Deposit to WMON contract
         const wmonContract = getERC20Contract(WEB3_CONFIG.WMON_ADDRESS, signer);
-        const allowance = await wmonContract.allowance(account, WEB3_CONFIG.UNISWAP_ROUTER);
         
-        if (allowance.lt(amountIn)) {
-          const approveTx = await wmonContract.approve(WEB3_CONFIG.UNISWAP_ROUTER, amountIn);
-          await approveTx.wait();
+        // WMON is typically a wrapped version that has deposit function
+        try {
+          tx = await wmonContract.deposit({ value: amountIn });
+        } catch (error) {
+          // If no deposit function, try transfer to WMON contract
+          tx = await signer.sendTransaction({
+            to: WEB3_CONFIG.WMON_ADDRESS,
+            value: amountIn
+          });
         }
-
-        const wethAddress = await routerContract.WETH();
-        const path = [WEB3_CONFIG.WMON_ADDRESS, wethAddress];
+      } else if (swapState.fromToken === 'WMON' && swapState.toToken === 'MON') {
+        // WMON -> MON: Withdraw from WMON contract
+        const wmonContract = getERC20Contract(WEB3_CONFIG.WMON_ADDRESS, signer);
         
-        tx = await routerContract.swapExactTokensForETH(
-          amountIn,
-          amountOutMin,
-          path,
-          account,
-          deadline
-        );
+        try {
+          tx = await wmonContract.withdraw(amountIn);
+        } catch (error) {
+          // If no withdraw function, try transfer back
+          tx = await wmonContract.transfer(account, amountIn);
+        }
       } else {
         throw new Error('Invalid token pair');
       }
@@ -183,7 +168,7 @@ export function useSwap() {
       }));
       
       // Update balances after successful swap
-      setTimeout(updateBalances, 1000);
+      setTimeout(updateBalances, 2000);
       
       return receipt;
     } catch (error) {

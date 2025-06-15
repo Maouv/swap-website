@@ -37,14 +37,14 @@ export function useSwap() {
     try {
       // Get MON balance
       const monBalance = await provider.getBalance(account);
-      const monBalanceFormatted = parseFloat(ethers.utils.formatEther(monBalance)).toFixed(4);
+      const monBalanceFormatted = parseFloat(ethers.formatEther(monBalance)).toFixed(4);
 
       // Get WMON balance
       let wmonBalanceFormatted = '0.00';
       try {
         const wmonContract = getERC20Contract(WEB3_CONFIG.WMON_ADDRESS, provider);
         const wmonBalance = await wmonContract.balanceOf(account);
-        wmonBalanceFormatted = parseFloat(ethers.utils.formatEther(wmonBalance)).toFixed(4);
+        wmonBalanceFormatted = parseFloat(ethers.formatEther(wmonBalance)).toFixed(4);
       } catch (error) {
         console.warn('Error fetching WMON balance:', error);
       }
@@ -69,7 +69,7 @@ export function useSwap() {
       setSwapState(prev => ({ ...prev, isLoading: true, error: null }));
 
       const routerContract = getRouterContract(provider);
-      const amountInWei = ethers.utils.parseEther(amountIn);
+      const amountInWei = ethers.parseEther(amountIn);
 
       // Determine path based on token selection
       let path: string[];
@@ -88,7 +88,7 @@ export function useSwap() {
 
       try {
         const amounts = await routerContract.getAmountsOut(amountInWei, path);
-        const amountOut = ethers.utils.formatEther(amounts[amounts.length - 1]);
+        const amountOut = ethers.formatEther(amounts[amounts.length - 1]);
         const rate = parseFloat(amountOut) / parseFloat(amountIn);
         
         setSwapState(prev => ({
@@ -125,7 +125,7 @@ export function useSwap() {
     try {
       setSwapState(prev => ({ ...prev, isLoading: true, error: null }));
 
-      const amountIn = ethers.utils.parseEther(swapState.fromAmount);
+      const amountIn = ethers.parseEther(swapState.fromAmount);
       let tx;
 
       if (swapState.fromToken === 'MON' && swapState.toToken === 'WMON') {

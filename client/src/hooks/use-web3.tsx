@@ -45,7 +45,7 @@ export function Web3Provider({ children }: { children: ReactNode }) {
       // Request account access
       await window.ethereum.request({ method: 'eth_requestAccounts' });
       
-      const web3Provider = new ethers.BrowserProvider(window.ethereum);
+      const web3Provider = new ethers.BrowserProvider(window.ethereum!);
       const accounts = await web3Provider.listAccounts();
       
       if (accounts.length > 0) {
@@ -114,17 +114,17 @@ export function Web3Provider({ children }: { children: ReactNode }) {
     if (window.ethereum) {
       const checkConnection = async () => {
         try {
-          const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
+          const web3Provider = new ethers.BrowserProvider(window.ethereum!);
           const accounts = await web3Provider.listAccounts();
           
           if (accounts.length > 0) {
-            const signer = web3Provider.getSigner();
+            const signer = await web3Provider.getSigner();
             const network = await web3Provider.getNetwork();
             
             setProvider(web3Provider);
             setSigner(signer);
-            setAccount(accounts[0]);
-            setChainId(network.chainId);
+            setAccount(accounts[0].address);
+            setChainId(Number(network.chainId));
             setIsConnected(true);
           }
         } catch (error) {
@@ -155,8 +155,8 @@ export function Web3Provider({ children }: { children: ReactNode }) {
       window.ethereum.on('chainChanged', handleChainChanged);
 
       return () => {
-        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
-        window.ethereum.removeListener('chainChanged', handleChainChanged);
+        window.ethereum?.removeListener('accountsChanged', handleAccountsChanged);
+        window.ethereum?.removeListener('chainChanged', handleChainChanged);
       };
     }
   }, []);

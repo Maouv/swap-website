@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root {
+  --background: hsl(0, 0%, 10%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(0, 0%, 15%);
+  --muted-foreground: hsl(0, 0%, 64%);
+  --popover: hsl(0, 0%, 16%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(0, 0%, 16%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(0, 0%, 25%);
+  --input: hsl(0, 0%, 16%);
+  --primary: hsl(262, 83%, 58%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(0, 0%, 15%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(0, 0%, 15%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(262, 83%, 58%);
+  --radius: 0.5rem;
+  
+  /* Ledgr specific colors */
+  --ledgr-dark: hsl(0, 0%, 10%);
+  --ledgr-card: hsl(0, 0%, 16%);
+  --ledgr-border: hsl(0, 0%, 25%);
+  --ledgr-purple: hsl(262, 83%, 58%);
+}
+
+.dark {
+  --background: hsl(0, 0%, 10%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(0, 0%, 15%);
+  --muted-foreground: hsl(0, 0%, 64%);
+  --popover: hsl(0, 0%, 16%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(0, 0%, 16%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(0, 0%, 25%);
+  --input: hsl(0, 0%, 16%);
+  --primary: hsl(262, 83%, 58%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(0, 0%, 15%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(0, 0%, 15%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(262, 83%, 58%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-ledgr-dark text-foreground font-courier antialiased min-h-screen;
+    font-family: 'Courier Prime', monospace;
+  }
+}
+
+@layer utilities {
+  .font-courier {
+    font-family: 'Courier Prime', monospace;
+  }
+  
+  .font-courier-bold {
+    font-family: 'Courier Prime', monospace;
+    font-weight: 700;
+  }
+  
+  .dotted-border {
+    border: 2px dotted var(--ledgr-border);
+  }
+  
+  .dotted-separator {
+    border-top: 1px dotted var(--ledgr-border);
+  }
+  
+  .gradient-purple {
+    background: linear-gradient(135deg, hsl(262, 83%, 58%) 0%, hsl(262, 83%, 48%) 100%);
+  }
+  
+  .bg-ledgr-dark {
+    background-color: var(--ledgr-dark);
+  }
+  
+  .bg-ledgr-card {
+    background-color: var(--ledgr-card);
+  }
+  
+  .border-ledgr {
+    border-color: var(--ledgr-border);
+  }
+  
+  .text-ledgr-purple {
+    color: var(--ledgr-purple);
+  }
+}

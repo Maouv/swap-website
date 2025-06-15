@@ -84,7 +84,7 @@ export function SwapInterface() {
       <div className="dotted-separator mb-4"></div>
 
       {/* From Token */}
-      <div className="space-y-4">
+      <div className="space-y-0">
         <TokenSelector
           token={swapState.fromToken}
           amount={swapState.fromAmount}
@@ -95,7 +95,7 @@ export function SwapInterface() {
         <div className="dotted-separator"></div>
 
         {/* Swap Direction Button */}
-        <div className="flex justify-center">
+        <div className="flex justify-center py-2">
           <button 
             className="p-2 hover:bg-ledgr-border rounded-lg transition-colors"
             onClick={swapDirection}
@@ -117,22 +117,6 @@ export function SwapInterface() {
       </div>
 
       <div className="dotted-separator my-4"></div>
-
-      {/* Transaction Info */}
-      <div className="text-sm text-gray-400 mb-4 font-courier space-y-1">
-        <div className="flex justify-between">
-          <span>Rate:</span>
-          <span>{swapState.exchangeRate}</span>
-        </div>
-        <div className="flex justify-between">
-          <span>Slippage:</span>
-          <span>0.5%</span>
-        </div>
-        <div className="flex justify-between">
-          <span>Gas Fee:</span>
-          <span>~0.001 MON</span>
-        </div>
-      </div>
 
       {/* Status Message */}
       <div className="text-sm text-gray-400 mb-4 font-courier">

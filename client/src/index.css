@@ -1,20 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-
 :root {
-  --background: hsl(0, 0%, 10%);
+  --background: hsl(0, 0%, 8%);
   --foreground: hsl(0, 0%, 98%);
   --muted: hsl(0, 0%, 15%);
   --muted-foreground: hsl(0, 0%, 64%);
-  --popover: hsl(0, 0%, 16%);
+  --popover: hsl(0, 0%, 12%);
   --popover-foreground: hsl(0, 0%, 98%);
-  --card: hsl(0, 0%, 16%);
+  --card: hsl(0, 0%, 12%);
   --card-foreground: hsl(0, 0%, 98%);
   --border: hsl(0, 0%, 25%);
-  --input: hsl(0, 0%, 16%);
+  --input: hsl(0, 0%, 12%);
   --primary: hsl(262, 83%, 58%);
   --primary-foreground: hsl(0, 0%, 98%);
   --secondary: hsl(0, 0%, 15%);
@@ -26,9 +26,9 @@
   --ring: hsl(262, 83%, 58%);
   --radius: 0.5rem;
   
-  /* Ledgr specific colors */
-  --ledgr-dark: hsl(0, 0%, 10%);
-  --ledgr-card: hsl(0, 0%, 16%);
+  /* Ledgr specific colors - pure black/white/gray */
+  --ledgr-dark: hsl(0, 0%, 8%);
+  --ledgr-card: hsl(0, 0%, 12%);
   --ledgr-border: hsl(0, 0%, 25%);
   --ledgr-purple: hsl(262, 83%, 58%);
 }

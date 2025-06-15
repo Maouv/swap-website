@@ -94,8 +94,15 @@ Ledgr is a decentralized token swap application built specifically for the Monad
 - **NODE_ENV**: Environment detection (development/production)
 
 ## Changelog
-- June 15, 2025. Initial setup
+- June 15, 2025. Initial setup and core swap interface implementation
+- June 15, 2025. Updated design to match exact user specifications:
+  - Changed color scheme to pure black/white/gray theme
+  - Added custom Monad token icons matching provided design
+  - Updated RPC URL to user's specific Alchemy endpoint
+  - Implemented exact layout from user's reference image
+  - Fixed CSS import order issue for proper font loading
 
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+Design requirements: Exact match to provided interface mockup with black/white/gray colors only.

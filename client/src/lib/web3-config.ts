@@ -1,3 +1,6 @@
+import monLogo from '@/assets/token-icons/mon.png';
+import wmonLogo from '@/assets/token-icons/wmon.png';
+
 export const WEB3_CONFIG = {
   MONAD_RPC: 'https://testnet-rpc.monad.xyz/',
   UNISWAP_ROUTER: '0xfb8e1c3b833f9e67a71c859a132cf783b645e436',
@@ -19,12 +22,15 @@ export const TOKEN_CONFIG = {
     symbol: 'MON',
     name: 'Monad',
     decimals: 18,
-    address: 'native'
+    address: 'native',
+    logo: monLogo
   },
   WMON: {
     symbol: 'WMON',
     name: 'Wrapped Mon',
     decimals: 18,
-    address: WEB3_CONFIG.WMON_ADDRESS
+    address: WEB3_CONFIG.WMON_ADDRESS,
+    logo: wmonLogo
   }
 };
+
